@@ -1,0 +1,27 @@
+{% extends 'project/home.html' %}
+<br />
+{% block title %} Task Details {% endblock title%}
+<br />
+{%block content%}
+<ul>
+  <li>
+    <h2>
+      {{ task.name }} - {{task.project.title}} -
+      <small>({{ task.status }})</small>
+    </h2>
+  </li>
+</ul>
+<h5></h5>
+
+<a
+  class="btn btn-outline-primary btn-sm"
+  href="{% url 'task_edit' project.id task.id %}"
+  >edit task</a
+>
+<hr />
+<a
+  class="btn btn-outline-primary btn-sm"
+  href="{% url 'project_detail' project.id %}"
+  >{{task.project.title}}</a
+>
+{% endblock content %}

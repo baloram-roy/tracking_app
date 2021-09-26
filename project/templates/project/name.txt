@@ -1,0 +1,30 @@
+class Task(models.Model):
+
+    # choices
+    #
+    RUNING = 'runing'
+    DONE = 'done'
+
+    STATUS_CHOICES = [
+        (RUNING, 'Runing'),
+        (DONE, 'Done'),
+    ]
+    # Model
+    #
+    project = models.ForeignKey(
+        Project, related_name='task', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now)
+    created_by = models.ForeignKey(
+        User, related_name='task', on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=RUNING
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.name

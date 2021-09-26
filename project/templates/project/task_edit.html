@@ -1,0 +1,40 @@
+{% extends 'project/home.html' %}
+<br />
+{% block title %} Task edit {% endblock title%}
+<br />
+{%block content%}
+
+<form method="POST">
+  {% csrf_token %}
+  <div class="form-row mt-3">
+    <div class="col">
+      <label class="mr-sm-2" for="inlineFormCustomSelect">Title</label>
+      <input
+        type="text"
+        name="title"
+        class="form-control"
+        value="{{ task.name }}"
+      />
+    </div>
+    <div class="col-auto">
+      <label class="mr-sm-2" for="inlineFormCustomSelect">Status</label>
+      <select name="status" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+        <option value="runing" 
+        {% if task.status == 'runing' %}selected{% endif %}>
+        Runing
+        </option>
+        
+        <option value="done" 
+        {% if task.status == 'done' %}selected{% endif %}>
+        Done
+        </option>
+      </select>
+    </div>
+
+    <div class="col">
+      <button type="submit" class="btn btn-outline-primary mb-2">Save</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

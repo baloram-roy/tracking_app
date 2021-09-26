@@ -1,0 +1,62 @@
+{% extends "project/home.html" %} {% block content %}
+
+<h2>{{ project.title }}</h2>
+<hr />
+
+<!-- list of task -->
+{% if not task_runing and not task_done %}
+<p>no task yet</p>
+{% endif %}
+
+<br />
+<h5>Running</h5>
+<ol>
+  {% if task_runing %} {% for task in task_runing %}
+  <li>
+    {{ task.name }} <small>{{ task.status }}</small>
+    <span>
+      <a href="{% url 'task_detail' project.id task.id %}"
+        ><button class="btn btn-outline-primary btn-sm">Details</button></a
+      >
+    </span>
+  </li>
+  {% endfor %} {% endif %}
+</ol>
+<hr />
+<h5>Done</h5>
+<ol>
+  {% if task_done %} {% for task in task_done %}
+  <li>
+    {{ task.name }} <small>{{ task.status }}</small>
+    <span>
+      <a href="{% url 'task_detail' project.id task.id %}"
+        ><button class="btn btn-outline-primary btn-sm">Details</button></a
+      >
+    </span>
+  </li>
+  {% endfor %} {% endif %}
+</ol>
+<!-- end task list -->
+
+<!-- add task form -->
+<form method="POST">
+  {% csrf_token %}
+  <div class="form-row mt-3">
+    <div class="col">
+      <input
+        type="text"
+        name="title"
+        class="form-control"
+        placeholder="Title"
+      />
+    </div>
+
+    <div class="col">
+      <button type="submit" class="btn btn-outline-primary mb-2">
+        Add Task
+      </button>
+    </div>
+  </div>
+</form>
+<!-- end add task form -->
+{% endblock content %}
