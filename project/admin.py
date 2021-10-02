@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Project, Task
+from .models import Project, Task, Entry
 
 # Register your models here.
 
@@ -16,3 +16,6 @@ class ProjecrtAdmin(admin.ModelAdmin):
 @admin.register(Task)
 class ProjecrtAdmin(admin.ModelAdmin):
     list_display = ['project', 'name', 'created_at', 'created_by', 'status']
+
+
+admin.site.register(Entry)

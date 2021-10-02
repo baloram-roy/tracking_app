@@ -1,0 +1,49 @@
+{% extends 'project/home.html' %} {% block title %} Edit_Entry {% endblock title%}
+{% block content %}
+<div class="border border-success rounded mt-3 py-4" style="width: auto; height: auto">
+<form method="POST" >
+  {% csrf_token %}
+  <div class="row mt-3 justify-content-center">
+    <div class="col-sm-2 mb-2">
+      <label>Register Hour</label>
+      <select name="hours" class="custom-select">
+        <option value="0"{% if hours == 0 %}selected{% endif %}>0h</option>
+        {% for i in 'x'|rjust:'10' %}
+            <option value="{{ forloop.counter }}"{% if hours == forloop.counter %} selected {% endif %}>
+                {{ forloop.counter }}
+            </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-sm-2 mb-2">
+      <label>Register Minutes</label>
+      <select name="minutes" class="custom-select">
+        <option value="0"{% if minutes == 0 %}selected{% endif %}>0h</option>
+        {% for i in 'x'|rjust:'59' %}
+            <option value="{{ forloop.counter }}"{% if minutes == forloop.counter %}selected{% endif %}>
+                {{ forloop.counter }}m
+            </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-sm-3 mb-2">
+      <label>Date</label>
+      <input
+        class="form-control"
+        type="date"
+        name="date"
+        value="{{ entry.created_at|date:'Y-m-d' }}"
+        placeholder="yyyy-mm-dd"
+      />
+    </div>
+
+    <div class="col-sm-2 mt-2">
+      <br />
+      <button type="submit" class="btn btn-outline-primary">
+        Save Changes
+      </button>
+    </div>
+  </div>
+</form>
+</div>
+{% endblock content %}

@@ -1,19 +1,35 @@
+# import from python:
+from datetime import datetime, timedelta, date
+
+
+# import from django:
+
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.urls.base import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
-from .models import Project, Task
+from .models import Entry, Project, Task
 
 # Create your views here.
 
 
 # Home view:
 #
-
-
 def home(request):
-    return render(request, 'project/home.html')
+    list = []
+    for i in range(0, 7):
+        time = (datetime.today() + timedelta(i))
+        list.append(time)
+
+    print(list)
+    context = {
+        # 'today': today,
+        # 'delta': delta,
+        'date': list,
+        'time': time
+    }
+    return render(request, 'project/index.html')
 
 
 def project_list_create(request):
@@ -23,7 +39,7 @@ def project_list_create(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         client_name = request.POST.get('client_name')
-        if title.is_valid() and client_name.is_valid():
+        if title and client_name:
             project = Project.objects.create(
                 title=title,
                 client_name=client_name,
@@ -113,10 +129,20 @@ def delete_project(request, pk):
 def task_detail(request, pk, task_id):
     project = get_object_or_404(Project, pk=pk)
     task = get_object_or_404(Task, pk=task_id)
+    if request.method == 'POST':
+        hours = int(request.POST.get('hours'))
+        minutes = int(request.POST.get('minutes'))
+        date = '%s %s' % (request.POST.get('date'), datetime.now().time())
+
+        minutes_total = (hours * 60) + minutes
+
+        entry = Entry.objects.create(
+            project=project, task=task, minutes=minutes_total, created_by=request.user, created_at=date)
 
     context = {
         'project': project,
-        'task': task
+        'task': task,
+        'today': datetime.today().strftime('%Y-%m-%d'),  # facing problem on this
     }
     return render(request, 'project/task_detail.html', context)
 
@@ -140,3 +166,30 @@ def task_edit(request, pk, task_id):
         'task': task
     }
     return render(request, 'project/task_edit.html', context)
+
+
+def edit_entry(request, pk, task_id, entry_id):
+    project = get_object_or_404(Project, pk=pk)
+    task = get_object_or_404(Task, pk=task_id)
+    entry = get_object_or_404(Entry, pk=entry_id)
+    if request.method == 'POST':
+        hours = int(request.POST.get('hours'))
+        minutes = int(request.POST.get('minutes'))
+        date = '%s %s' % (request.POST.get('date'), datetime.now().time())
+
+        entry.created_at = date
+        entry.minutes = (hours * 60) + minutes
+        entry.save()
+
+        return redirect('task_detail', pk=project.id, task_id=task.id)
+
+    hours, minutes = divmod(entry.minutes, 60)
+
+    context = {
+        'project': project,
+        'task': task,
+        'entry': entry,
+        'hours': hours,
+        'minutes': minutes
+    }
+    return render(request, 'project/entry_edit.html', context)

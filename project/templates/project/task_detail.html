@@ -3,25 +3,110 @@
 {% block title %} Task Details {% endblock title%}
 <br />
 {%block content%}
-<ul>
-  <li>
-    <h2>
-      {{ task.name }} - {{task.project.title}} -
-      <small>({{ task.status }})</small>
-    </h2>
-  </li>
-</ul>
-<h5></h5>
+<br />
+<h2>
+  {{ task.name }} -
+  <small>({{ task.status }})</small>
+  <span
+    ><a
+      class="btn btn-outline-primary btn-sm"
+      href="{% url 'task_edit' project.id task.id %}"
+      >edit task</a
+    >
+  </span>
+</h2>
 
-<a
-  class="btn btn-outline-primary btn-sm"
-  href="{% url 'task_edit' project.id task.id %}"
-  >edit task</a
->
+{% if task.status == 'runing' %}
 <hr />
+<form method="POST">
+  {% csrf_token %}
+  <div class="row mt-3">
+    <div class="col-sm-2 mb-2">
+      <label>Register Hour</label>
+      <select name="hours" class="custom-select">
+        <option value="0">0h</option>
+        {% for i in 'x'|rjust:'10' %}
+        <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-sm-2 mb-2">
+      <label>Register Minutes</label>
+      <select name="minutes" class="custom-select">
+        <option value="0">0m</option>
+        {% for i in 'x'|rjust:'59' %}
+        <option value="{{ forloop.counter }}">{{ forloop.counter }}m</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-sm-3 mb-2">
+      <label>Date</label>
+      <input
+        class="form-control"
+        type="date"
+        name="date"
+        value="{{ today|date:'d-m-Y' }}"
+        placeholder="yyyy-mm-dd"
+      />
+    </div>
+
+    <div class="col-sm-2 mt-2">
+      <br />
+      <button type="submit" class="btn btn-outline-primary">Save</button>
+    </div>
+  </div>
+</form>
+{% endif %}
+
+<hr />
+<p>Back to Task List:</p>
 <a
-  class="btn btn-outline-primary btn-sm"
+  class="btn btn-outline-secondary btn-sm"
   href="{% url 'project_detail' project.id %}"
-  >{{task.project.title}}</a
->
+  >{{task.project.title}}
+</a>
+<br />
+<!-- entry log table start from here -->
+<br />
+{% if task.entries.all %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">User</th>
+      <th scope="col">Time</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in task.entries.all %}
+    <tr>
+      <td>{{ entry.created_at }}</td>
+      <td>{{ entry.created_by.username }}</td>
+      <td>{{ entry.minutes }}</td>
+      <td>
+        <a href="{% url 'edit-entry' project.id task.id entry.id %}">Edit</a>
+        <a href="#">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Total</th>
+      <th></th>
+      <th>{{ task.registered_time}}</th>
+    </tr>
+  </tfoot>
+</table>
+{% else %}
+<p>No Entries.....!</p>
+{% endif %}
+
+<!-- <ol>
+  {% for date in today %}
+  <li>{{ date }}</li>
+  {% endfor %}
+</ol> -->
+
 {% endblock content %}

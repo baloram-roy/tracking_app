@@ -1,12 +1,12 @@
 from django.urls import path
 
-from .views import (home, project_list_create, project_detail,
+from .views import (edit_entry, project_list_create, project_detail,
                     ProjectUpdateView, delete_project, task_detail, task_edit)
 
 urlpatterns = [
 
     # path for home view
-    path('', home, name='home'),
+#     path('', home, name='home'),
 
     # path for project related view
     path('project/', project_list_create, name='project_list'),
@@ -21,5 +21,10 @@ urlpatterns = [
     # path  for task realted view:
 
     path('project/<int:pk>/<int:task_id>/', task_detail, name='task_detail'),
-    path('project/<int:pk>/<int:task_id>/edit/', task_edit, name='task_edit')
+    path('project/<int:pk>/<int:task_id>/edit/', task_edit, name='task_edit'),
+
+
+    # path for entry related view:
+    path('project/<int:pk>/<int:task_id>/<int:entry_id>/edit/', edit_entry, name='edit-entry'),
+
 ]

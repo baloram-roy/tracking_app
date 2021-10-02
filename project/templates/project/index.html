@@ -1,0 +1,48 @@
+{% extends 'project/home.html' %} 
+
+{% block title %} Index Page {% endblock title%} 
+
+{% block content %}
+
+
+    <div class="row tr table-striped">
+        <div class="col-sm-6">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="">Task Name</th> 
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="co-sm-6">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><small>{{ date.0 | date:"D d" }}</small></th>
+                        <th><small>{{ date.1 | date:"D d" }}</small></th>
+                        <th><small>{{ date.2 | date:"D d" }}</small></th>
+                        <th><small>{{ date.3 | date:"D d" }}</small></th>
+                        <th><small>{{ date.4 | date:"D d" }}</small></th>
+                        <th><small>{{ date.5 | date:"D d" }}</small></th>
+                        <th><small>{{ date.6 | date:"D d" }}</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        
+                        {% for task in tasks %}
+                        <td>{{ task.name }}-<small>{{ task.project.title }}</small> </td>
+                        <td>{{ task.registered_time }}</td>
+                        <td><input type="text" name="minutes"></td>
+                        {% endfor %}
+                            
+                        
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock content %}

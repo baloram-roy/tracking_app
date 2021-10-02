@@ -13,7 +13,8 @@
 <ol>
   {% if task_runing %} {% for task in task_runing %}
   <li>
-    {{ task.name }} <small>{{ task.status }}</small>
+    {{ task.name }}
+    <small>({{ task.registered_time }}m) {{ task.status }}</small>
     <span>
       <a href="{% url 'task_detail' project.id task.id %}"
         ><button class="btn btn-outline-primary btn-sm">Details</button></a
@@ -22,12 +23,14 @@
   </li>
   {% endfor %} {% endif %}
 </ol>
+
 <hr />
 <h5>Done</h5>
 <ol>
   {% if task_done %} {% for task in task_done %}
   <li>
-    {{ task.name }} <small>{{ task.status }}</small>
+    {{ task.name }}
+    <small>({{ task.registered_time }}m) {{ task.status }}</small>
     <span>
       <a href="{% url 'task_detail' project.id task.id %}"
         ><button class="btn btn-outline-primary btn-sm">Details</button></a
