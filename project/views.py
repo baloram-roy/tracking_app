@@ -20,14 +20,12 @@ def home(request):
     task = Task.objects.all()
     project = Project.objects.all()
     entry = Entry.objects.all()
+    
     list = []
-
-
     for i in range(0, 7):
         time = (datetime.today() + timedelta(i))
         list.append(time)
 
-    print(list)
     context = {
         'tasks': task,
         'entrys':entry,

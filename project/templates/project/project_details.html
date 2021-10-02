@@ -3,12 +3,18 @@
 <h2>{{ project.title }}</h2>
 <hr />
 
+<p>Go Back</p>
+<a
+  class="btn btn-outline-secondary btn-sm"
+  href="{% url 'home' %}"
+  >Home
+</a>
+<hr>
 <!-- list of task -->
 {% if not task_runing and not task_done %}
 <p>no task yet</p>
 {% endif %}
 
-<br />
 <h5>Running</h5>
 <ol>
   {% if task_runing %} {% for task in task_runing %}
@@ -39,6 +45,7 @@
   </li>
   {% endfor %} {% endif %}
 </ol>
+<hr>
 <!-- end task list -->
 
 <!-- add task form -->

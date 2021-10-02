@@ -4,6 +4,22 @@
 <br />
 {%block content%}
 <br />
+
+<p>Go Back</p>
+<a
+  class="btn btn-outline-secondary btn-sm"
+  href="{% url 'home' %}"
+  >Home
+</a>
+<a
+  class="btn btn-outline-secondary btn-sm"
+  href="{% url 'project_detail' project.id %}"
+  >{{task.project.title}}
+</a>
+
+<br>
+<hr>
+<br>
 <h2>
   {{ task.name }} -
   <small>({{ task.status }})</small>
@@ -59,12 +75,7 @@
 {% endif %}
 
 <hr />
-<p>Back to Task List:</p>
-<a
-  class="btn btn-outline-secondary btn-sm"
-  href="{% url 'project_detail' project.id %}"
-  >{{task.project.title}}
-</a>
+
 <br />
 <!-- entry log table start from here -->
 <br />
