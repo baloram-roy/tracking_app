@@ -1,5 +1,5 @@
 # import from python:
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 
 # import from django:
@@ -17,19 +17,24 @@ from .models import Entry, Project, Task
 # Home view:
 #
 def home(request):
+    task = Task.objects.all()
+    project = Project.objects.all()
+    entry = Entry.objects.all()
     list = []
+
+
     for i in range(0, 7):
         time = (datetime.today() + timedelta(i))
         list.append(time)
 
     print(list)
     context = {
-        # 'today': today,
-        # 'delta': delta,
+        'tasks': task,
+        'entrys':entry,
         'date': list,
-        'time': time
+        'project': project 
     }
-    return render(request, 'project/index.html')
+    return render(request, 'project/index.html',context)
 
 
 def project_list_create(request):
@@ -138,11 +143,11 @@ def task_detail(request, pk, task_id):
 
         entry = Entry.objects.create(
             project=project, task=task, minutes=minutes_total, created_by=request.user, created_at=date)
-
+    
     context = {
         'project': project,
         'task': task,
-        'today': datetime.today().strftime('%Y-%m-%d'),  # facing problem on this
+        'today': datetime.today()  # facing problem on this
     }
     return render(request, 'project/task_detail.html', context)
 

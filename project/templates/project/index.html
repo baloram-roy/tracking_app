@@ -1,48 +1,44 @@
-{% extends 'project/home.html' %} 
-
-{% block title %} Index Page {% endblock title%} 
-
+{% extends 'project/home.html' %}
+<br />
+{% block title %} Index Page {% endblock title%}
+<br />
 {% block content %}
+<div class="ml-5">
+<table class="table align-middle">
+  <tbody>
+    <tr>
+      <td scope="col"><span>Project | Task</span></td>
+      <td scope="col">Status</td>
+      <td scope="col">Spent Time</td>
+      <td scope="col">Created By</td>
+      <td scope="col">Last Input</td>
+    </tr>
+    {% for entry in entrys %}
+    <tr>
+      <td>
+        <div><small><a href="{% url 'project_detail' entry.project.id %}">{{ entry.project.title }}</a></small></div>
+        <a href="{% url 'task_detail' entry.project.id entry.task.id %}">{{ entry.task.name }}</a>
+      </td>
+      <td class="pt-4">
 
-
-    <div class="row tr table-striped">
-        <div class="col-sm-6">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="">Task Name</th> 
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <div class="co-sm-6">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th><small>{{ date.0 | date:"D d" }}</small></th>
-                        <th><small>{{ date.1 | date:"D d" }}</small></th>
-                        <th><small>{{ date.2 | date:"D d" }}</small></th>
-                        <th><small>{{ date.3 | date:"D d" }}</small></th>
-                        <th><small>{{ date.4 | date:"D d" }}</small></th>
-                        <th><small>{{ date.5 | date:"D d" }}</small></th>
-                        <th><small>{{ date.6 | date:"D d" }}</small></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        
-                        {% for task in tasks %}
-                        <td>{{ task.name }}-<small>{{ task.project.title }}</small> </td>
-                        <td>{{ task.registered_time }}</td>
-                        <td><input type="text" name="minutes"></td>
-                        {% endfor %}
-                            
-                        
-                        
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
+        {% if entry.task.status == 'runing' %}
+        <button class="btn btn-sm btn-outline-success">{{ entry.task.status }}</button>
+        {% else %}
+        <button class="btn btn-sm btn-outline-danger">{{ entry.task.status }}</button>
+        {% endif %}
+      </td>
+      <td class="pt-4">
+        {{entry.task.registered_time }}
+      </td>
+      <td class="pt-4">
+        {{entry.created_by }}
+      </td>
+      <td class="pt-4">
+        {{entry.created_at }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
 {% endblock content %}

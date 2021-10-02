@@ -45,7 +45,7 @@
         class="form-control"
         type="date"
         name="date"
-        value="{{ today|date:'d-m-Y' }}"
+        value="{{ today|date:'Y-m-d' }}"
         placeholder="yyyy-mm-dd"
       />
     </div>
@@ -102,11 +102,5 @@
 {% else %}
 <p>No Entries.....!</p>
 {% endif %}
-
-<!-- <ol>
-  {% for date in today %}
-  <li>{{ date }}</li>
-  {% endfor %}
-</ol> -->
 
 {% endblock content %}
